@@ -9,12 +9,10 @@
 // @icon	http://steamcommunity.com/favicon.ico
 // ==/UserScript==
 
-
 jQuery(function($) {
 
 	//auto agree with buy/sell terms
 	$('#market_sell_dialog_accept_ssa, #market_buynow_dialog_accept_ssa').attr('checked', true);
-	
 	
 	//get sell lower price from page
 	function getSellPrice(){
@@ -23,8 +21,7 @@ jQuery(function($) {
 	}
 
 	//autocomplete sell price in modal window
-	unsafeWindow.SellCurrentSelection = function(price){
-		
+	unsafeWindow.SellCurrentSelection = function(price) {
 		SellItemDialog.Show(g_ActiveInventory.selectedItem);
 		
 		if (price == null)
@@ -34,15 +31,11 @@ jQuery(function($) {
 		SellItemDialog.OnBuyerPriceInputKeyUp();
 		
 		$('#market_sell_buyercurrency_input').focus().select();
-		
 	}
 	
 	var _PopulateMarketActions = unsafeWindow.PopulateMarketActions;
 	
 	unsafeWindow.PopulateMarketActions = function ( elActions, item ) {
-		
-		console.log(item);
-		
 		_PopulateMarketActions(elActions, item);
 		
 		var lastSellPrice = localStorage.getItem(item.appid + '#' + item.classid);
@@ -51,20 +44,15 @@ jQuery(function($) {
 									.appendChild(
 										CreateMarketActionButton('green', 'javascript:FastSellCurrentSelection(' + parseFloat(lastSellPrice.replace(',', '.')) + ')', 'qs# ' + lastSellPrice)
 									);
-			
 			elActions.appendChild(elLastPrice);
 		}
-		
 	}
 
 	$('#market_sell_dialog_ok').on('click', function (){
 		var item = g_ActiveInventory.selectedItem;
 		localStorage.setItem(item.appid + '#' + item.classid, $('#market_sell_buyercurrency_input').val());
 	});
-	
-	
 });
-
 
 unsafeWindow.FastSellCurrentSelection = function (value) {
 	SellCurrentSelection(value);
@@ -73,6 +61,5 @@ unsafeWindow.FastSellCurrentSelection = function (value) {
 		document.querySelector('#market_sell_dialog_accept').click();
 		document.querySelector('#market_sell_dialog_ok').click();
 	}, 400); 
-	
 }
 	
